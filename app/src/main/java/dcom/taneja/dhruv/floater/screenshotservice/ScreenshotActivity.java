@@ -1,9 +1,10 @@
-package dcom.taneja.dhruv.floater.ScreenshotService;
+package dcom.taneja.dhruv.floater.screenshotservice;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,12 +22,13 @@ import dcom.taneja.dhruv.floater.R;
  * Created by PrateekGarg on 1/12/2018.
  */
 
-public class ScreenshotService extends AppCompatActivity {
+public class ScreenshotActivity extends AppCompatActivity {
     public String pathToFile = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.screenshot_activity);
         Button updateButton = (Button) findViewById(R.id.screenshotButton);
         updateButton.setOnClickListener(new View.OnClickListener() {
 
@@ -67,6 +69,7 @@ public class ScreenshotService extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
             outputStream.flush();
             outputStream.close();
+            Log.i("Path to file", pathToFile);
         } catch (Throwable e) {
             // Several error may come out with file handling or DOM
             e.printStackTrace();
