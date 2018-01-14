@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -58,36 +59,30 @@ public class ScreenshotActivity extends AppCompatActivity {
     }
     private void updateTimer() {
         TextView timer = (TextView) findViewById(R.id.editText);
-
-        timer.setText(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+        timer.setText(android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", new Date()));
     }
 
     private void takeScreenshot() {
-        Date now = new Date();
-        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+        String now = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+
 
         //Check and ask for permission to write and read storage here:
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
                 Log.v(TAG, "Permission is granted");
-                //return true;
             } else {
-
                 Log.v(TAG, "Permission is revoked");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                //return false;
             }
         } else { //permission is automatically granted on sdk<23 upon installation
             Log.v(TAG, "Permission is granted");
-            //return true;
         }
 
 
         //Activity code starting here
         try {
             // image naming and path  to include sd card  appending name you choose for file
-            //String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
             String mPath = getFilesDir().getAbsolutePath() + "/" + now + ".jpg";
             pathToFile = mPath;
 
@@ -121,6 +116,12 @@ public class ScreenshotActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
         //Need to handle this one in a better way
         return null;
+    }
+
+    public Uri getScreenshotUri() {
+        Uri fileUri = Uri.fromFile(new File(getPathToFile()));
+        return fileUri;
+
     }
 
     private void setImage() {
