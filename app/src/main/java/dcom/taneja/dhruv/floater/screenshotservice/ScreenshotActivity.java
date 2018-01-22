@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,7 +32,7 @@ public class ScreenshotActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 0;
     private String mPathToFile = null;
     private String TAG = "Permission Information:";
-    private TextView mTimer = null;
+    private TextView mTextViewTimer = null;
     private View mLayout = null;
 
     @Override
@@ -86,6 +85,7 @@ public class ScreenshotActivity extends AppCompatActivity {
             // END_INCLUDE(startScreenshot)
         } else { //permission is automatically granted on sdk<23 upon installation
             Log.v(TAG, "Permission is granted");
+            takeScreenshot();
         }
     }
 
@@ -123,8 +123,8 @@ public class ScreenshotActivity extends AppCompatActivity {
             updateTimer();
             String now = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
             // image naming and path  to include sd card  appending name you choose for file
-            String mPath = getFilesDir().getAbsolutePath() + "/" + now + ".jpg";
-            mPathToFile = mPath;
+
+            mPathToFile = getFilesDir().getAbsolutePath() + "/" + now + ".jpg";
 
             // create bitmap screen capture
             View v1 = getWindow().getDecorView().getRootView();
@@ -132,7 +132,7 @@ public class ScreenshotActivity extends AppCompatActivity {
             Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
             v1.setDrawingCacheEnabled(false);
 
-            File imageFile = new File(mPath);
+            File imageFile = new File(mPathToFile);
 
             FileOutputStream outputStream = new FileOutputStream(imageFile);
             int quality = 100;
@@ -156,23 +156,16 @@ public class ScreenshotActivity extends AppCompatActivity {
     }
 
     private void updateTimer() {
-        mTimer = findViewById(R.id.editText);
-        mTimer.setText(android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", new Date()));
+        mTextViewTimer = findViewById(R.id.editText);
+        mTextViewTimer.setText(android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", new Date()));
     }
 
     public String getPathToFile() {
-        if (mPathToFile != null) {
-            return mPathToFile;
-        }
-        Toast.makeText(getApplicationContext(), "No screenshot has been taken yet!",
-                Toast.LENGTH_LONG).show();
-        //Need to handle this one in a better way
-        return null;
+        return this.mPathToFile;
     }
 
     public Uri getScreenshotUri() {
-        Uri fileUri = Uri.fromFile(new File(getPathToFile()));
-        return fileUri;
+        return Uri.fromFile(new File(getPathToFile()));
 
     }
 
