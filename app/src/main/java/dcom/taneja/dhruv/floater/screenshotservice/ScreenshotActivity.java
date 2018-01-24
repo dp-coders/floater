@@ -29,18 +29,18 @@ import dcom.taneja.dhruv.floater.R;
  */
 
 public class ScreenshotActivity extends AppCompatActivity {
-    private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 0;
-    private String mPathToFile = null;
-    private String TAG = "Permission Information:";
-    private TextView mTextViewTimer = null;
-    private View mLayout = null;
+    private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 537;
+    private String mPathToFile;
+    private String TAG = ScreenshotActivity.class.getSimpleName();
+    private TextView mTextViewTimer;
+    private View mLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.screenshot_activity);
         mLayout = findViewById(R.id.main_activity);
-        findViewById(R.id.screenshotButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.button_screenshot_action).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -107,9 +107,7 @@ public class ScreenshotActivity extends AppCompatActivity {
             }).show();
 
         } else {
-            Snackbar.make(mLayout,
-                    "Permission is not available. Requesting write permission.",
-                    Snackbar.LENGTH_SHORT).show();
+
             // Request the permission. The result will be received in onRequestPermissionResult().
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     PERMISSION_REQUEST_EXTERNAL_STORAGE);
@@ -140,6 +138,7 @@ public class ScreenshotActivity extends AppCompatActivity {
             outputStream.flush();
             outputStream.close();
             Log.i("Path to file", mPathToFile);
+            //Sample saved file path: /data/user/0/dcom.taneja.dhruv.floater/files/20180124_014515.jpg
 
             setImage();
         } catch (IOException e) {
@@ -149,14 +148,14 @@ public class ScreenshotActivity extends AppCompatActivity {
     }
 
     private void setImage() {
-        ImageView imageView = findViewById(R.id.imageView);
+        ImageView imageView = findViewById(R.id.image_screenshot);
         Bitmap bitmap = BitmapFactory.decodeFile(mPathToFile);
 
         imageView.setImageBitmap(bitmap);
     }
 
     private void updateTimer() {
-        mTextViewTimer = findViewById(R.id.editText);
+        mTextViewTimer = findViewById(R.id.text_timestamp);
         mTextViewTimer.setText(android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", new Date()));
     }
 
