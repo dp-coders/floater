@@ -8,8 +8,6 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import dcom.taneja.dhruv.floater.service.FloaterService;
-
 /**
  * Created by dhruvtaneja on 10/02/18.
  */
